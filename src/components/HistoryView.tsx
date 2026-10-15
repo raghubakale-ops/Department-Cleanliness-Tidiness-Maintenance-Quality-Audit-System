@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { InspectionRecord } from '../types';
-import { DEPARTMENTS, PERFORMANCE_BANDS, calculateScore, computeAcademicYear } from '../data/inspectionData';
+import { DEPARTMENTS, PERFORMANCE_BANDS, HOD_NAMES, calculateScore, computeAcademicYear } from '../data/inspectionData';
 import { ColorTheme } from '../theme';
 import {
   Search,
@@ -300,16 +300,16 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
 
           <div>
             <label className="block text-slate-600 font-semibold mb-1">Inspecting HOD</label>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search name..."
-                value={hodSearch}
-                onChange={(e) => setHodSearch(e.target.value)}
-                className="w-full border border-slate-300 rounded-lg pl-7 pr-2 py-2 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1"
-              />
-              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2 top-2.5" />
-            </div>
+            <select
+              value={hodSearch}
+              onChange={(e) => setHodSearch(e.target.value)}
+              className="w-full border border-slate-300 rounded-lg p-2 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1"
+            >
+              <option value="">All HODs</option>
+              {HOD_NAMES.map(name => (
+                <option key={name} value={name}>{name}</option>
+              ))}
+            </select>
           </div>
 
           <div>

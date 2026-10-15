@@ -411,9 +411,11 @@ export const ReportView: React.FC<ReportViewProps> = ({
               )}
             </div>
             <div className="w-full pt-1 border-t border-slate-200 text-xs">
-              <span className="font-semibold block truncate">
-                {record.signatures.principal.name || 'Dr. J. G. Principal'}
-              </span>
+              {record.signatures.principal.name ? (
+                <span className="font-semibold block truncate">
+                  {record.signatures.principal.name}
+                </span>
+              ) : null}
               <span className="text-[10px] text-slate-500">Approval &amp; Seal</span>
             </div>
           </div>

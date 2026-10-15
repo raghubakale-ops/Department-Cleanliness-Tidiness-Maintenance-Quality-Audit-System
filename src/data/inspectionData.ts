@@ -113,6 +113,19 @@ export const DEPARTMENTS = [
   'Civil Engineering – Postgraduate (CV PG)'
 ];
 
+export const HOD_NAMES = [
+  'Dr. Mithun B.M.',
+  'Dr. Uttam Patil',
+  'Prof. Vinayakumar R. Bagali',
+  'Dr. Mallikarjuna G. D.',
+  'Dr. B. V. Hubballi',
+  'Dr. S. RohitRaj',
+  'Dr. Praveen Banasode',
+  'Dr. Shivkumar M. A.',
+  'Dr. B. K. Manuprasad',
+  'Dr. Prashant Patil'
+];
+
 export const RATING_OPTIONS: { value: RatingValue; label: string; score: number | null; description: string }[] = [
   { value: '5', label: '5 – Excellent', score: 5, description: 'Exemplary condition, flawless upkeep' },
   { value: '4', label: '4 – Very Good', score: 4, description: 'Minor non-systemic issues only' },

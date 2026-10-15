@@ -11,6 +11,7 @@ import {
   TOTAL_PARAMETERS,
   SAFETY_CRITICAL_ITEMS,
   DEPARTMENTS,
+  HOD_NAMES,
   RATING_OPTIONS,
   calculateScore,
   computeAcademicYear,
@@ -754,25 +755,47 @@ export default function App() {
                   <label className="block text-xs font-bold text-slate-700 mb-1">
                     Name of Inspecting HOD <span className="text-rose-600">*</span>
                   </label>
+                  <select
+                    value={draft.inspectingHod}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      updateDraft('inspectingHod', val);
+                      setDraft(p => ({
+                        ...p,
+                        signatures: {
+                          ...p.signatures,
+                          inspectingHod: { ...p.signatures.inspectingHod, name: val }
+                        }
+                      }));
+                    }}
+                    className="w-full text-sm border border-slate-300 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2"
+                  >
+                    <option value="">Select Inspecting HOD...</option>
+                    {HOD_NAMES.map(name => (
+                      <option key={name} value={name}>{name}</option>
+                    ))}
+                    {draft.inspectingHod && !HOD_NAMES.includes(draft.inspectingHod) && (
+                      <option value={draft.inspectingHod}>{draft.inspectingHod}</option>
+                    )}
+                  </select>
                   <input
                     type="text"
                     value={draft.inspectingHod}
                     onChange={(e) => {
-                      updateDraft('inspectingHod', e.target.value);
-                      if (!draft.signatures.inspectingHod.name) {
-                        setDraft(p => ({
-                          ...p,
-                          signatures: {
-                            ...p.signatures,
-                            inspectingHod: { ...p.signatures.inspectingHod, name: e.target.value }
-                          }
-                        }));
-                      }
+                      const val = e.target.value;
+                      updateDraft('inspectingHod', val);
+                      setDraft(p => ({
+                        ...p,
+                        signatures: {
+                          ...p.signatures,
+                          inspectingHod: { ...p.signatures.inspectingHod, name: val }
+                        }
+                      }));
                     }}
-                    placeholder="Enter name (e.g., Dr. A. Kumar)"
-                    className="w-full text-sm border border-slate-300 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2"
+                    placeholder="Or type custom HOD name..."
+                    className="mt-1.5 w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-1"
                   />
-                  <span className="text-[11px] text-slate-400 mt-1 block">Conducting official</span>
+                  <span className="text-[11px] text-slate-400 mt-1 block">Select from dropdown or type name</span>
                 </div>
 
                 {/* Department Inspected */}
@@ -798,25 +821,47 @@ export default function App() {
                   <label className="block text-xs font-bold text-slate-700 mb-1">
                     HOD of Inspected Department
                   </label>
+                  <select
+                    value={draft.departmentHod}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      updateDraft('departmentHod', val);
+                      setDraft(p => ({
+                        ...p,
+                        signatures: {
+                          ...p.signatures,
+                          departmentHod: { ...p.signatures.departmentHod, name: val }
+                        }
+                      }));
+                    }}
+                    className="w-full text-sm border border-slate-300 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2"
+                  >
+                    <option value="">Select Department HOD...</option>
+                    {HOD_NAMES.map(name => (
+                      <option key={name} value={name}>{name}</option>
+                    ))}
+                    {draft.departmentHod && !HOD_NAMES.includes(draft.departmentHod) && (
+                      <option value={draft.departmentHod}>{draft.departmentHod}</option>
+                    )}
+                  </select>
                   <input
                     type="text"
                     value={draft.departmentHod}
                     onChange={(e) => {
-                      updateDraft('departmentHod', e.target.value);
-                      if (!draft.signatures.departmentHod.name) {
-                        setDraft(p => ({
-                          ...p,
-                          signatures: {
-                            ...p.signatures,
-                            departmentHod: { ...p.signatures.departmentHod, name: e.target.value }
-                          }
-                        }));
-                      }
+                      const val = e.target.value;
+                      updateDraft('departmentHod', val);
+                      setDraft(p => ({
+                        ...p,
+                        signatures: {
+                          ...p.signatures,
+                          departmentHod: { ...p.signatures.departmentHod, name: val }
+                        }
+                      }));
                     }}
-                    placeholder="Enter HOD name"
-                    className="w-full text-sm border border-slate-300 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2"
+                    placeholder="Or type custom HOD name..."
+                    className="mt-1.5 w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-1"
                   />
-                  <span className="text-[11px] text-slate-400 mt-1 block">Departmental head</span>
+                  <span className="text-[11px] text-slate-400 mt-1 block">Select from dropdown or type name</span>
                 </div>
               </div>
             </div>
@@ -1211,13 +1256,19 @@ export default function App() {
                         </label>
                         <input
                           type="text"
+                          list="hod-action-datalist"
                           value={action.responsiblePerson}
                           onChange={(e) =>
                             handleUpdateAction(idx, 'responsiblePerson', e.target.value)
                           }
-                          placeholder="Staff / Lab In-Charge name"
+                          placeholder="Select HOD or type staff name..."
                           className="w-full border border-slate-300 rounded-lg p-2 bg-white focus:outline-none focus:ring-1"
                         />
+                        <datalist id="hod-action-datalist">
+                          {HOD_NAMES.map(name => (
+                            <option key={name} value={name} />
+                          ))}
+                        </datalist>
                       </div>
 
                       <div>
@@ -1319,7 +1370,7 @@ export default function App() {
                 {/* 3. Principal */}
                 <SignaturePad
                   label="3. Principal Approval"
-                  name={draft.signatures.principal.name || 'Principal'}
+                  name={draft.signatures.principal.name}
                   onNameChange={(name) =>
                     setDraft(p => ({
                       ...p,
