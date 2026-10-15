@@ -1,0 +1,8 @@
+{
+  "name": "JCE Department Inspection",
+  "description": "Institutional cleanliness, tidiness, and maintenance inspection app for Jain College of Engineering, Belagavi with 37 parameters, scoring, corrective action plan, digital signatures, and PDF reporting.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
