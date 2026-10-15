@@ -756,46 +756,58 @@ export default function App() {
                     Name of Inspecting HOD <span className="text-rose-600">*</span>
                   </label>
                   <select
-                    value={draft.inspectingHod}
+                    value={
+                      HOD_NAMES.includes(draft.inspectingHod)
+                        ? draft.inspectingHod
+                        : draft.inspectingHod
+                        ? '__CUSTOM__'
+                        : ''
+                    }
                     onChange={(e) => {
                       const val = e.target.value;
-                      updateDraft('inspectingHod', val);
-                      setDraft(p => ({
-                        ...p,
-                        signatures: {
-                          ...p.signatures,
-                          inspectingHod: { ...p.signatures.inspectingHod, name: val }
-                        }
-                      }));
+                      if (val === '__CUSTOM__') {
+                        updateDraft('inspectingHod', ' ');
+                      } else {
+                        updateDraft('inspectingHod', val);
+                        setDraft(p => ({
+                          ...p,
+                          signatures: {
+                            ...p.signatures,
+                            inspectingHod: { ...p.signatures.inspectingHod, name: val }
+                          }
+                        }));
+                      }
                     }}
-                    className="w-full text-sm border border-slate-300 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2"
+                    className="w-full text-sm font-semibold border border-slate-300 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2"
                   >
                     <option value="">Select Inspecting HOD...</option>
                     {HOD_NAMES.map(name => (
                       <option key={name} value={name}>{name}</option>
                     ))}
-                    {draft.inspectingHod && !HOD_NAMES.includes(draft.inspectingHod) && (
-                      <option value={draft.inspectingHod}>{draft.inspectingHod}</option>
-                    )}
+                    <option value="__CUSTOM__">Other (Enter custom name)...</option>
                   </select>
-                  <input
-                    type="text"
-                    value={draft.inspectingHod}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      updateDraft('inspectingHod', val);
-                      setDraft(p => ({
-                        ...p,
-                        signatures: {
-                          ...p.signatures,
-                          inspectingHod: { ...p.signatures.inspectingHod, name: val }
-                        }
-                      }));
-                    }}
-                    placeholder="Or type custom HOD name..."
-                    className="mt-1.5 w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-1"
-                  />
-                  <span className="text-[11px] text-slate-400 mt-1 block">Select from dropdown or type name</span>
+
+                  {(!HOD_NAMES.includes(draft.inspectingHod) && draft.inspectingHod !== '') && (
+                    <input
+                      type="text"
+                      autoFocus
+                      value={draft.inspectingHod.trim() === '' ? '' : draft.inspectingHod}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        updateDraft('inspectingHod', val);
+                        setDraft(p => ({
+                          ...p,
+                          signatures: {
+                            ...p.signatures,
+                            inspectingHod: { ...p.signatures.inspectingHod, name: val }
+                          }
+                        }));
+                      }}
+                      placeholder="Type custom HOD name..."
+                      className="mt-2 w-full text-sm border border-slate-300 rounded-xl px-3 py-2 bg-white focus:outline-none focus:ring-2"
+                    />
+                  )}
+                  <span className="text-[11px] text-slate-400 mt-1 block">Conducting official</span>
                 </div>
 
                 {/* Department Inspected */}
@@ -806,7 +818,7 @@ export default function App() {
                   <select
                     value={draft.department}
                     onChange={(e) => updateDraft('department', e.target.value)}
-                    className="w-full text-sm border border-slate-300 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2"
+                    className="w-full text-sm font-semibold border border-slate-300 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2"
                   >
                     <option value="">Select department...</option>
                     {DEPARTMENTS.map(d => (
@@ -822,46 +834,58 @@ export default function App() {
                     HOD of Inspected Department
                   </label>
                   <select
-                    value={draft.departmentHod}
+                    value={
+                      HOD_NAMES.includes(draft.departmentHod)
+                        ? draft.departmentHod
+                        : draft.departmentHod
+                        ? '__CUSTOM__'
+                        : ''
+                    }
                     onChange={(e) => {
                       const val = e.target.value;
-                      updateDraft('departmentHod', val);
-                      setDraft(p => ({
-                        ...p,
-                        signatures: {
-                          ...p.signatures,
-                          departmentHod: { ...p.signatures.departmentHod, name: val }
-                        }
-                      }));
+                      if (val === '__CUSTOM__') {
+                        updateDraft('departmentHod', ' ');
+                      } else {
+                        updateDraft('departmentHod', val);
+                        setDraft(p => ({
+                          ...p,
+                          signatures: {
+                            ...p.signatures,
+                            departmentHod: { ...p.signatures.departmentHod, name: val }
+                          }
+                        }));
+                      }
                     }}
-                    className="w-full text-sm border border-slate-300 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2"
+                    className="w-full text-sm font-semibold border border-slate-300 rounded-xl px-3 py-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2"
                   >
                     <option value="">Select Department HOD...</option>
                     {HOD_NAMES.map(name => (
                       <option key={name} value={name}>{name}</option>
                     ))}
-                    {draft.departmentHod && !HOD_NAMES.includes(draft.departmentHod) && (
-                      <option value={draft.departmentHod}>{draft.departmentHod}</option>
-                    )}
+                    <option value="__CUSTOM__">Other (Enter custom name)...</option>
                   </select>
-                  <input
-                    type="text"
-                    value={draft.departmentHod}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      updateDraft('departmentHod', val);
-                      setDraft(p => ({
-                        ...p,
-                        signatures: {
-                          ...p.signatures,
-                          departmentHod: { ...p.signatures.departmentHod, name: val }
-                        }
-                      }));
-                    }}
-                    placeholder="Or type custom HOD name..."
-                    className="mt-1.5 w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-1"
-                  />
-                  <span className="text-[11px] text-slate-400 mt-1 block">Select from dropdown or type name</span>
+
+                  {(!HOD_NAMES.includes(draft.departmentHod) && draft.departmentHod !== '') && (
+                    <input
+                      type="text"
+                      autoFocus
+                      value={draft.departmentHod.trim() === '' ? '' : draft.departmentHod}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        updateDraft('departmentHod', val);
+                        setDraft(p => ({
+                          ...p,
+                          signatures: {
+                            ...p.signatures,
+                            departmentHod: { ...p.signatures.departmentHod, name: val }
+                          }
+                        }));
+                      }}
+                      placeholder="Type custom HOD name..."
+                      className="mt-2 w-full text-sm border border-slate-300 rounded-xl px-3 py-2 bg-white focus:outline-none focus:ring-2"
+                    />
+                  )}
+                  <span className="text-[11px] text-slate-400 mt-1 block">Head of inspected dept</span>
                 </div>
               </div>
             </div>

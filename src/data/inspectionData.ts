@@ -123,7 +123,8 @@ export const HOD_NAMES = [
   'Dr. Praveen Banasode',
   'Dr. Shivkumar M. A.',
   'Dr. B. K. Manuprasad',
-  'Dr. Prashant Patil'
+  'Dr. Prashant Patil',
+  'Dr. Sachinkumar'
 ];
 
 export const RATING_OPTIONS: { value: RatingValue; label: string; score: number | null; description: string }[] = [
