@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { InspectionRecord } from '../types';
 import { CATEGORIES, INSPECTION_ITEMS, calculateScore } from '../data/inspectionData';
 import { ColorTheme } from '../theme';
-import { Printer, ArrowLeft, Download, FileSpreadsheet, CheckCircle2, Clock } from 'lucide-react';
+import { exportReportToPdf } from '../utils/pdfExport';
+import { Printer, ArrowLeft, Download, FileSpreadsheet, CheckCircle2, Clock, Loader2, FileCheck } from 'lucide-react';
 
 interface ReportViewProps {
   record: InspectionRecord;
@@ -21,11 +22,32 @@ export const ReportView: React.FC<ReportViewProps> = ({
 }) => {
   const score = calculateScore(record.ratings);
   const todayDate = new Date().toISOString().slice(0, 10);
+  const reportRef = useRef<HTMLDivElement>(null);
+
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
+  const [pdfProgressText, setPdfProgressText] = useState('');
 
   const formatRating = (val?: string) => {
     if (!val) return '—';
     if (val === 'NA') return 'N/A';
     return val;
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!reportRef.current) return;
+    setIsExportingPdf(true);
+    const cleanRef = (record.ref || 'draft').replace(/[^a-zA-Z0-9-]/g, '_');
+    const filename = `JCE-Inspection-Report-${cleanRef}.pdf`;
+    try {
+      await exportReportToPdf(reportRef.current, filename, (status) => {
+        setPdfProgressText(status);
+      });
+    } catch (err) {
+      alert('Failed to generate PDF automatically. You can also use the Print Dialog button.');
+    } finally {
+      setIsExportingPdf(false);
+      setPdfProgressText('');
+    }
   };
 
   return (
@@ -66,18 +88,37 @@ export const ReportView: React.FC<ReportViewProps> = ({
 
           <button
             type="button"
-            onClick={() => window.print()}
+            disabled={isExportingPdf}
+            onClick={handleDownloadPdf}
             style={{ backgroundColor: theme.primary }}
-            className="inline-flex items-center gap-2 px-5 py-2 text-sm font-bold text-white rounded-xl shadow hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-2 px-5 py-2 text-sm font-bold text-white rounded-xl shadow hover:opacity-90 transition-opacity disabled:opacity-75"
           >
-            <Printer className="w-4 h-4" />
-            <span>Print / Save as PDF</span>
+            {isExportingPdf ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <FileCheck className="w-4 h-4" />
+            )}
+            <span>{isExportingPdf ? (pdfProgressText || 'Generating PDF...') : 'Download PDF'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-xl transition-colors"
+            title="Open browser print dialog"
+          >
+            <Printer className="w-3.5 h-3.5 text-slate-600" />
+            <span>Print Dialog</span>
           </button>
         </div>
       </div>
 
       {/* Official Institutional Report Container */}
-      <div className="bg-white border border-slate-300 rounded-2xl p-6 sm:p-10 shadow-md text-slate-900 print:border-0 print:shadow-none print:p-0">
+      <div
+        ref={reportRef}
+        id="jce-official-report"
+        className="bg-white border border-slate-300 rounded-2xl p-6 sm:p-10 shadow-md text-slate-900 print:border-0 print:shadow-none print:p-0"
+      >
         {/* Institutional Header */}
         <div className="text-center pb-6 border-b-2" style={{ borderColor: theme.primary }}>
           <h1 className="text-xl sm:text-2xl font-black tracking-tight uppercase" style={{ color: theme.primary }}>
